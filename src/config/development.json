@@ -1,0 +1,8 @@
+{
+    "expressPort": 3000,
+    "secret":"mysecret",
+    "mongoDb": {
+        "socialgraph":    "mongodb://localhost:27017/social_graph",
+        "members":        "mongodb://localhost:27017/memberdata"
+    }
+}

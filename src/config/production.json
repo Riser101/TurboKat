@@ -1,0 +1,20 @@
+{
+	"expressPort": 80,
+
+	"mongoDb": {
+		"socialgraph":	"mongodb://sg:bms2016@in-temp-sg-mdb.bookmyshow.org:27017/sg?authSource=admin",
+		"members":		"mongodb://cust:bms2016@in-temp-cust-mdb.bookmyshow.org:27017/cust?authSource=admin"
+	},
+
+	"RabbitMQ": {
+		"connect": {
+			"host": "172.16.60.17",
+			"port": 5672,
+			"user": "guest",
+			"pass": "guest",
+			"vhost":"/",
+			"retries": 3,
+			"reconnectTimeout": 5000			
+		}
+	}
+}

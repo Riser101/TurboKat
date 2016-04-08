@@ -1,0 +1,32 @@
+{
+	"1000": "Email address is required",
+	"1001": "Invalid Email Address",
+	"1002": "User is already registered",
+	"1003": "Password is required",
+	"1004": "Role is required",
+	"1005": "User status is required",
+	"1006": "Error while inserting user",
+	"1007": "Error while finding user",
+	"1008": "Error while getting data from roles",
+	"1009": "Error while updating user",
+	"1010": "Same Email address is already present",
+	"1011": "User Id is required",
+	"1012": "Error while getting data from access",
+	"1013": "Page is required",
+	"1014": "Title is required",
+	"1015": "Error while updating access",
+	"1016": "Same access name is already present",
+	"1017": "Access Name is already present",
+
+	"2001": "Oops, something went wrong. Retry after sometime",
+	"2002": "Email address is not yet registered",
+	"2003": "Invalid username or password",
+
+	"3000":"Failed to fetch data from database",
+	"3001":"Role is required",
+	"3002":"Error while inserting user",
+	"3003":"Oops, something went wrong. Retry after sometime",
+	"3004":"Role name is already present",
+	"3005":"Access list cannot be empty"
+}
+
