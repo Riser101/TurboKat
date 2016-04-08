@@ -27,6 +27,8 @@
 	"3002":"Error while inserting user",
 	"3003":"Oops, something went wrong. Retry after sometime",
 	"3004":"Role name is already present",
-	"3005":"Access list cannot be empty"
+	"3005":"Access list cannot be empty",
+
+	"4000":"Invalid token, please login"
 }
 

@@ -10,10 +10,12 @@ var ObjectID = require('mongodb').ObjectID;
 
 
 exports.getAccess = function(req, res, next) {
-	console.log("I should'nt be here");
 	var data = {},
 		res = {};
-
+	// if(req.store.get('jwtResponse') == 'fail') {
+	// 	req.store.set('message':'Invalid token, please login again.');
+	// 	return;
+	// }	
 	Access.findAllAccess(data, function(err, result) {
 		if(err) {
 			return next(new Unauthorized(errMsg['1012'], 1012));

@@ -6,7 +6,7 @@ var roles = require('../routes/api/sgRoles');
 var access = require('../routes/api/sgAccess');
 var common = require('../lib/sgCommon');
 var config = require('../config/development');
-// var jwt = require('jsonwebtoken');
+
 
 router.post('/login/',
 	common.isValidEmail,
@@ -14,10 +14,7 @@ router.post('/login/',
 	users.validateLogin	
 );
 var secret = config.secret;
-
 app.set('secret',secret);
-
-
 
 //USERS
 router.get('/users',
@@ -28,6 +25,7 @@ router.get('/users',
 	common.successResponse
 );
 router.post('/users', 
+	common.verifyJWTToken,
 	common.isValidUsersParams, 
 	users.isNewUser, 
 	users.addUser
@@ -40,6 +38,7 @@ router.put('/users',
 
 //ROLES
 router.get('/roles',
+	common.verifyJWTToken,
 	access.getAccess,
 	roles.getRoles, 
 	common.successResponse

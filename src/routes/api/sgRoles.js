@@ -12,6 +12,11 @@ exports.getRoles = function(req, res, next) {
 	var data = {},
 		res = {},
 		access = req.store.get('access');
+	
+	// if(req.store.get('jwtResponse') == 'fail') {
+	// 	return;
+	// }	
+			
 	Roles.findAllRoles(data, function(err, result) {
 		if(err) {
 			return next(new Unauthorized(errMsg['1008'], 1008));
