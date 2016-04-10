@@ -4,7 +4,8 @@ var BadRequest = require('../errors/errors').BadRequest;
 var errMsg = require('../errors/errorCodes');
 var validator = require("email-validator");
 var jwt = require('jsonwebtoken');
-
+var roles = require('./db/models/sgRoles');
+var ObjectId = require('mongodb').ObjectId;
 /** check if email is valid */
 exports.isValidEmail = function(req, res, next) {
 
@@ -204,19 +205,26 @@ exports.getHRFDate = function() {
 
 exports.verifyJWTToken = function(req, res, next) {
  	var token  = req.body.token || req.headers['token'];
-	
+	console.log(req.body.token);
 	if(token == 'ZlcMwXJI35say4oj') {
-		next();
+		console.log("you fired me");
+		return next();
 	}
 
 	if(token) {
 		jwt.verify(token, app.get('secret'), function(err, decoded) {
 			if(err) {
 				// req.store.set('jwtResponse', 'fail');
-				console.log("inside verifyJWTToken");
+				// console.log("inside verifyJWTToken");
 				return next(new Unauthorized(errMsg['4000']), 4000);
 			}
 			req.decoded = decoded;
+			
+			roles.findRole(ObjectId(req.decoded.role), function(err, result) {
+				console.log("your roles collection");
+				console.log(result);
+			});
+
 		});
 	} else {
 		return res.status(403).send('no token provided');
