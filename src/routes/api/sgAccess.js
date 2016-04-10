@@ -41,7 +41,7 @@ exports.addAccess = function(req, res, next) {
 	var params = req.body;
 	// Input params
 	var data = {
-		page: params.page,
+		API: params.API,
 		title: params.title,
 		ts: {
 			insISO : Math.floor(Date.now()/1000),

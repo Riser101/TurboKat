@@ -12,7 +12,7 @@
 	"1010": "Same Email address is already present",
 	"1011": "User Id is required",
 	"1012": "Error while getting data from access",
-	"1013": "Page is required",
+	"1013": "API is required",
 	"1014": "Title is required",
 	"1015": "Error while updating access",
 	"1016": "Same access name is already present",
@@ -29,6 +29,8 @@
 	"3004":"Role name is already present",
 	"3005":"Access list cannot be empty",
 
-	"4000":"Invalid token, please login"
+	"4000":"Invalid token, please login",
+
+	"5000":"you're not allowed to create new users. you ain't no admin man."
 }
 

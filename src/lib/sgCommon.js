@@ -25,6 +25,8 @@ exports.isValidEmail = function(req, res, next) {
 exports.isValidUsersParams = function(req, res, next) {
 	var params = req.body;
 	
+	var access = req.store.get('access');
+	
 	if(!params.email || params.email == '') {
 		return next(new Unauthorized(errMsg['1000'], 1000));
 	}
@@ -44,8 +46,14 @@ exports.isValidUsersParams = function(req, res, next) {
 	if(!params.userStatus || params.userStatus == '') {
 		return next(new Unauthorized(errMsg['1005'], 1005));
 	}
-
-    next();	
+	for(var item in access) {
+		console.log(access[item]);
+		if(access[item] == "create-user") {
+			return next();
+		} else {
+			return next(new Unauthorized(errMsg['5000'], 500));
+		}
+	}
 };
 
 exports.isValidUserPutParams = function(req, res, next) {
@@ -94,7 +102,7 @@ exports.isValidRolesParams = function(req, res, next) {
 exports.isValidAccessParams = function(req, res, next) {
 	var params = req.body;
 
-	if(!params.page || params.page == '') {
+	if(!params.API || params.API == '') {
 		return next(new Unauthorized(errMsg['1013'], 1013));
 	}
 
@@ -205,7 +213,7 @@ exports.getHRFDate = function() {
 
 exports.verifyJWTToken = function(req, res, next) {
  	var token  = req.body.token || req.headers['token'];
-	console.log(req.body.token);
+	// console.log(req.body.token);
 	if(token == 'ZlcMwXJI35say4oj') {
 		console.log("you fired me");
 		return next();
@@ -214,22 +222,23 @@ exports.verifyJWTToken = function(req, res, next) {
 	if(token) {
 		jwt.verify(token, app.get('secret'), function(err, decoded) {
 			if(err) {
-				// req.store.set('jwtResponse', 'fail');
-				// console.log("inside verifyJWTToken");
 				return next(new Unauthorized(errMsg['4000']), 4000);
 			}
 			req.decoded = decoded;
 			
 			roles.findRole(ObjectId(req.decoded.role), function(err, result) {
-				console.log("your roles collection");
-				console.log(result);
+				var access = result.access;
+				req.store.set('access',access);
+				// var testArr = ["create-role","create-user"];
+				// req.store.set('access',testArr);
+				next();
 			});
 
 		});
 	} else {
 		return res.status(403).send('no token provided');
 	}
-	next();
+	// next();
 };
 
 
