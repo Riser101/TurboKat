@@ -26,8 +26,7 @@ exports.isValidUsersParams = function(req, res, next) {
 	var params = req.body;
 	
 	var access = req.store.get('access');
-	console.log("access");
-	console.log(access);
+	
 	if(!params.email || params.email == '') {
 		return next(new Unauthorized(errMsg['1000'], 1000));
 	}
@@ -49,12 +48,10 @@ exports.isValidUsersParams = function(req, res, next) {
 	}
 
 	for(var item in access) {
-		console.log('inside of for looop');
+		console.log(access[item]);
 		if(access[item] == "create-user") {
 			return next();
-		} else {
-			return next(new Unauthorized(errMsg['5000'], 5000));
-		}
+		} 
 	}
 	next();
 };
@@ -227,10 +224,10 @@ exports.verifyJWTToken = function(req, res, next) {
 				return next(new Unauthorized(errMsg['4000']), 4000);
 			}
 			req.decoded = decoded;
-			console.log(decoded);
+			
 			roles.findRole(ObjectId(req.decoded.role), function(err, result) {
 				var access = result.access;
-				console.log(access);
+				
 				req.store.set('access',access);
 				next();
 			});
