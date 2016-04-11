@@ -26,7 +26,8 @@ exports.isValidUsersParams = function(req, res, next) {
 	var params = req.body;
 	
 	var access = req.store.get('access');
-	
+	console.log("access");
+	console.log(access);
 	if(!params.email || params.email == '') {
 		return next(new Unauthorized(errMsg['1000'], 1000));
 	}
@@ -46,14 +47,16 @@ exports.isValidUsersParams = function(req, res, next) {
 	if(!params.userStatus || params.userStatus == '') {
 		return next(new Unauthorized(errMsg['1005'], 1005));
 	}
+
 	for(var item in access) {
-		console.log(access[item]);
+		console.log('inside of for looop');
 		if(access[item] == "create-user") {
 			return next();
 		} else {
-			return next(new Unauthorized(errMsg['5000'], 500));
+			return next(new Unauthorized(errMsg['5000'], 5000));
 		}
 	}
+	next();
 };
 
 exports.isValidUserPutParams = function(req, res, next) {
@@ -215,7 +218,6 @@ exports.verifyJWTToken = function(req, res, next) {
  	var token  = req.body.token || req.headers['token'];
 	// console.log(req.body.token);
 	if(token == 'ZlcMwXJI35say4oj') {
-		console.log("you fired me");
 		return next();
 	}
 
@@ -225,12 +227,11 @@ exports.verifyJWTToken = function(req, res, next) {
 				return next(new Unauthorized(errMsg['4000']), 4000);
 			}
 			req.decoded = decoded;
-			
+			console.log(decoded);
 			roles.findRole(ObjectId(req.decoded.role), function(err, result) {
 				var access = result.access;
+				console.log(access);
 				req.store.set('access',access);
-				// var testArr = ["create-role","create-user"];
-				// req.store.set('access',testArr);
 				next();
 			});
 
