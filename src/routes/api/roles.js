@@ -4,19 +4,13 @@ var BadRequest = require('../../errors/errors').BadRequest;
 var errMsg = require('../../errors/errorCodes');
 var Roles = require('../../lib/db/models/roles');
 var Unauthorized = require('../../errors/errors').Unauthorized;
-var common = require('../../lib/sgCommon');
-var Access = require('../../lib/db/models/sgAccess');
-
+var common = require('../../lib/commonFunctions');
 
 exports.getRoles = function(req, res, next) {
 	var data = {},
 		res = {},
 		access = req.store.get('access');
 	
-	// if(req.store.get('jwtResponse') == 'fail') {
-	// 	return;
-	// }	
-			
 	Roles.findAllRoles(data, function(err, result) {
 		if(err) {
 			return next(new Unauthorized(errMsg['1008'], 1008));

@@ -83,14 +83,8 @@ exports.isValidUserPutParams = function(req, res, next) {
 	if(!params.userStatus || params.userStatus == '') {
 		return next(new Unauthorized(errMsg['1005'], 1005));
 	}
-	// for(var item in access) {
-	// 	console.log(access[item]);
-	// 	if(access[item] == "update-user") {
-	// 		return next();
-	// 	} 
-	// }
-
-    next();	
+	
+	next();	
 };
 
 exports.isValidRolesParams = function(req, res, next) {
@@ -122,43 +116,6 @@ exports.isValidRolesPutParams = function(req, res, next) {
 
 	next();
 };
-exports.isValidAccessParams = function(req, res, next) {
-	var params = req.body;
-
-	if(!params.API || params.API == '') {
-		return next(new Unauthorized(errMsg['1013'], 1013));
-	}
-
-	if(!params.title || params.title == '') {
-		return next(new Unauthorized(errMsg['1014'], 1014));
-	}
-
-    next();	
-};
-
-exports.isValidAccessPutParams = function(req, res, next) {
-	var params = req.body;
-
-	if(!params.id || params.id == '') {
-		return next(new Unauthorized(errMsg['1011'], 1011));
-	}
-
-	if(!params.page || params.page == '') {
-		return next(new Unauthorized(errMsg['1013'], 1013));
-	}
-
-	if(!params.title || params.title == '') {
-		return next(new Unauthorized(errMsg['1014'], 1014));
-	}
-
-    next();	
-};
-/** send reload signal from worker to master process */
-exports.sendReloadToMaster = function(req, res, next) {
-	process.send({"cmd":"reload"});
-	res.response = 'OK';
-	next();
-};
 
 /**
  * check for valid JSON
@@ -180,24 +137,6 @@ exports.isJSON = function(item){
         return true;
     }
     return false;
-}
-
-/** send sync start signal from worker to master process */
-exports.sendSyncToMaster = function(req, res, next) {
-	process.send({"cmd":"syncstart"});
-	res.response = 'OK';
-	next();
-};
-
-/** start enqueue process from members Mongo and push to RabbitMQ */
-
-exports.sendStartEnqueue = function(req, res, next){
-	process.send({	"cmd" : "startenqueue",
-					"limit" : req.query.limit,
-					"skip"	: req.query.skip
-				});
-	res.response = 'OK';
-	next();
 }
 
 /** sends sucessfull response 

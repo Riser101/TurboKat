@@ -2,6 +2,6 @@
     "expressPort": 3000,
     "secret": "mysecret",
     "mongoDb": {
-        "socialgraph": "mongodb://localhost:27017/TurboKat"
+        "TurboKatDB": "mongodb://localhost:27017/TurboKat"
     }
 }

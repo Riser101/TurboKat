@@ -4,7 +4,7 @@ var BadRequest = require('../../errors/errors').BadRequest;
 var errMsg = require('../../errors/errorCodes');
 var Users = require('../../lib/db/models/users');
 var Unauthorized = require('../../errors/errors').Unauthorized;
-var common = require('../../lib/sgCommon');
+var common = require('../../lib/commonFunctions');
 var ObjectID = require('mongodb').ObjectID;
 var Roles = require('../../lib/db/models/roles');
 var jwt = require('jsonwebtoken');
@@ -172,11 +172,7 @@ exports.populateUsers = function(req, res, next) {
 	var roles = req.store.get('roles');
 	var params = req.body;
 	var data = {};
-	console.log("you are hitting me");
-	// if(req.store.get('jwtResponse') == 'fail') {
-	// 	req.store.set('message':'Invalid token, please login again.');
-	// 	return;
-	// }	
+	
 	Users.findAllUser(data, function(err, usersResult) {
 		if(err) {
 			return new Unauthorized(errMsg['3000'], 3000);

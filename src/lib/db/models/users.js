@@ -1,7 +1,7 @@
 //CRUD on config collection inside MongoDb
 
 var procEnv = (process.env.NODE_ENV && process.env.NODE_ENV != '') ? process.env.NODE_ENV : 'development',
-    getDb = require('../sgConnect'),
+    getDb = require('../connect'),
     config = require('../../../config/'+procEnv+'.json'),
     debug = require('debug')('sg-conf');
 
@@ -21,7 +21,7 @@ function Users(data) {
 Users.save = function(data, done) {
 
   // var data = this;
-  getDb('socialgraph',function(err, db) {
+  getDb('TurboKatDB',function(err, db) {
     if (err) {
       return done(err);
     }
@@ -37,7 +37,7 @@ Users.save = function(data, done) {
 //find a user
 Users.findUser = function(query, done) {
 
-  getDb('socialgraph', function(err, db) {
+  getDb('TurboKatDB', function(err, db) {
     if (err) {
       return done(err);
     }
@@ -54,7 +54,7 @@ Users.findUser = function(query, done) {
 //find all users
 Users.findAllUser = function(query, done) {
 
-  getDb('socialgraph', function(err, db) {
+  getDb('TurboKatDB', function(err, db) {
     if (err) {
       return done(err);
     }
@@ -76,7 +76,7 @@ Users.findAllUser = function(query, done) {
 //update user details
 Users.update = function(query, option, done) {
 
-  getDb('socialgraph', function(err, db) {
+  getDb('TurboKatDB', function(err, db) {
     if (err) {
       return done(err);
     }

@@ -1,7 +1,7 @@
 //CRUD on config collection inside MongoDb
 
 var procEnv = (process.env.NODE_ENV && process.env.NODE_ENV != '') ? process.env.NODE_ENV : 'development',
-    getDb = require('../sgConnect'),
+    getDb = require('../connect'),
     config = require('../../../config/'+procEnv+'.json'),
     debug = require('debug')('sg-conf');
 var ObjectId = require('mongodb').ObjectID;
@@ -21,7 +21,7 @@ function Roles(data) {
 Roles.save = function(data, done) {
 
   // var data = this;
-  getDb('socialgraph',function(err, db) {
+  getDb('TurboKatDB',function(err, db) {
     if (err) {
       return done(err);
     }
@@ -36,7 +36,7 @@ Roles.save = function(data, done) {
 
 Roles.findAllRoles = function(query, done) {
 
-  getDb('socialgraph', function(err, db) {
+  getDb('TurboKatDB', function(err, db) {
     if (err) {
       return done(err);
     }
@@ -57,7 +57,7 @@ Roles.findAllRoles = function(query, done) {
 
 Roles.findRole = function(query, done) {
 
-  getDb('socialgraph', function(err, db) {
+  getDb('TurboKatDB', function(err, db) {
     if (err) {
       return done(err);
     }
@@ -74,7 +74,7 @@ Roles.findRole = function(query, done) {
 //update role details
 Roles.update = function(query, option, done) {
 
-  getDb('socialgraph', function(err, db) {
+  getDb('TurboKatDB', function(err, db) {
     if (err) {
       return done(err);
     }
