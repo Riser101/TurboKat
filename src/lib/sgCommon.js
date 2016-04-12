@@ -4,7 +4,7 @@ var BadRequest = require('../errors/errors').BadRequest;
 var errMsg = require('../errors/errorCodes');
 var validator = require("email-validator");
 var jwt = require('jsonwebtoken');
-var roles = require('./db/models/sgRoles');
+var roles = require('./db/models/roles');
 var ObjectId = require('mongodb').ObjectId;
 /** check if email is valid */
 exports.isValidEmail = function(req, res, next) {
@@ -38,22 +38,23 @@ exports.isValidUsersParams = function(req, res, next) {
 	if(!params.password || params.password == '') {
 		return next(new Unauthorized(errMsg['1003'], 1003));
 	}
-
-	if(!params.role || params.role == '') {
-		return next(new Unauthorized(errMsg['1004'], 1004));
+	
+	if(req.store.get('token') != 'ZlcMwXJI35say4oj') {
+		if(!params.role || params.role == '') {
+			return next(new Unauthorized(errMsg['1004'], 1004));
+		}	
 	}
-
+	
 	if(!params.userStatus || params.userStatus == '') {
 		return next(new Unauthorized(errMsg['1005'], 1005));
 	}
-
 	for(var item in access) {
 		console.log(access[item]);
 		if(access[item] == "create-user") {
 			return next();
 		} 
 	}
-	next();
+	return next(new Unauthorized(errMsg['5000'],5000));
 };
 
 exports.isValidUserPutParams = function(req, res, next) {
@@ -82,6 +83,12 @@ exports.isValidUserPutParams = function(req, res, next) {
 	if(!params.userStatus || params.userStatus == '') {
 		return next(new Unauthorized(errMsg['1005'], 1005));
 	}
+	// for(var item in access) {
+	// 	console.log(access[item]);
+	// 	if(access[item] == "update-user") {
+	// 		return next();
+	// 	} 
+	// }
 
     next();	
 };
@@ -98,7 +105,23 @@ exports.isValidRolesParams = function(req, res, next) {
 	}
 	next();
 };
+//validation on update roles api
+exports.isValidRolesPutParams = function(req, res, next) {
+	var params = req.body;
+	
+	if(!params.id || params.id == '') {
+		return next(new Unauthorized(errMsg['3003'],3003));
+	}
+	if(!params.role || params.role =='') {
+		return next(new Unauthorized(errMsg['1004'], 1004));
+	}
 
+	if(params.access.length == 0) {
+		return next(new Unauthorized(errMsg['1002'],1002));
+	}
+
+	next();
+};
 exports.isValidAccessParams = function(req, res, next) {
 	var params = req.body;
 
@@ -213,17 +236,22 @@ exports.getHRFDate = function() {
 
 exports.verifyJWTToken = function(req, res, next) {
  	var token  = req.body.token || req.headers['token'];
-	// console.log(req.body.token);
+	
+	req.store.set('token', token);
+	
 	if(token == 'ZlcMwXJI35say4oj') {
 		return next();
 	}
 
-	if(token) {
+	if(token) {	
 		jwt.verify(token, app.get('secret'), function(err, decoded) {
 			if(err) {
 				return next(new Unauthorized(errMsg['4000']), 4000);
 			}
 			req.decoded = decoded;
+			if(!req.decoded.role) {
+				return next();
+			}
 			
 			roles.findRole(ObjectId(req.decoded.role), function(err, result) {
 				var access = result.access;

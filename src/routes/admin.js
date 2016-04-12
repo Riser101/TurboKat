@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var errorHandler = require('../errors/errorHandler');
-var users = require('../routes/api/sgUsers');
-var roles = require('../routes/api/sgRoles');
+var users = require('../routes/api/users');
+var roles = require('../routes/api/roles');
 var access = require('../routes/api/sgAccess');
 var common = require('../lib/sgCommon');
 var config = require('../config/development');
@@ -30,7 +30,8 @@ router.post('/users',
 	users.isNewUser, 
 	users.addUser
 );
-router.put('/users', 
+router.put('/users',
+	common.verifyJWTToken, 
 	common.isValidUserPutParams,
 	users.isEmailPresent,
 	users.updateUser
@@ -44,27 +45,35 @@ router.get('/roles',
 	common.successResponse
 );
 router.post('/roles', 
+	common.verifyJWTToken,
 	common.isValidRolesParams,
 	roles.isNewRole,
 	roles.addRoles,
 	common.successResponse
 );
-
-//ACCESS
-router.get('/access',
-	access.getAccess, 
+router.put('/roles',
+	common.verifyJWTToken,
+	common.isValidRolesPutParams,
+	roles.isRolePresent,
+	roles.updateRoles,
 	common.successResponse
 );
-router.post('/access', 
-	common.isValidAccessParams, 
-	access.isNewAccess, 
-	access.addAccess
-);
-router.put('/access', 
-	common.isValidAccessPutParams,
-	access.isAccessPresent,
-	access.updateAccess
-);
+
+// //ACCESS
+// router.get('/access',
+// 	access.getAccess, 
+// 	common.successResponse
+// );
+// router.post('/access', 
+// 	common.isValidAccessParams, 
+// 	access.isNewAccess, 
+// 	access.addAccess
+// );
+// router.put('/access', 
+// 	common.isValidAccessPutParams,
+// 	access.isAccessPresent,
+// 	access.updateAccesss
+// );
 
 router.use(errorHandler);
 

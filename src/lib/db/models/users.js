@@ -4,10 +4,9 @@ var procEnv = (process.env.NODE_ENV && process.env.NODE_ENV != '') ? process.env
     getDb = require('../sgConnect'),
     config = require('../../../config/'+procEnv+'.json'),
     debug = require('debug')('sg-conf');
-var ObjectId = require('mongodb').ObjectID;
 
-//add new user
-function Roles(data) {
+
+function Users(data) {
   var d = new Date();
   this.active = true;
   this.enabled = true;
@@ -18,14 +17,15 @@ function Roles(data) {
   this.updatedISO = d.toISOString();
 }
 
-Roles.save = function(data, done) {
+//add new user
+Users.save = function(data, done) {
 
   // var data = this;
   getDb('socialgraph',function(err, db) {
     if (err) {
       return done(err);
     }
-    db.collection('sgRoles').insert(data, function(err, results) {
+    db.collection('users').insert(data, function(err, results) {
       if (err) {
         return done(err);
       }
@@ -34,14 +34,32 @@ Roles.save = function(data, done) {
   });
 };
 
-Roles.findAllRoles = function(query, done) {
+//find a user
+Users.findUser = function(query, done) {
 
   getDb('socialgraph', function(err, db) {
     if (err) {
       return done(err);
     }
 
-    db.collection('sgRoles').find(query, function(err, results) {
+    db.collection('users').findOne(query, function(err, results) {
+      if (err) {
+        return done(err);
+      }
+      done(null, results);
+    });
+  });
+};
+
+//find all users
+Users.findAllUser = function(query, done) {
+
+  getDb('socialgraph', function(err, db) {
+    if (err) {
+      return done(err);
+    }
+
+    db.collection('users').find(query, function(err, results) {
       if (err) {
         return done(err);
       }
@@ -55,20 +73,22 @@ Roles.findAllRoles = function(query, done) {
   });
 };
 
-Roles.findRole = function(query, done) {
+//update user details
+Users.update = function(query, option, done) {
 
   getDb('socialgraph', function(err, db) {
     if (err) {
       return done(err);
     }
 
-    db.collection('sgRoles').findOne(query, function(err, results) {
+    db.collection('users').update(query, option, function(err, results) {
       if (err) {
         return done(err);
       }
+
       done(null, results);
     });
   });
 };
 
-exports = module.exports = Roles;
+exports = module.exports = Users;
