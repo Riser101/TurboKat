@@ -5,6 +5,7 @@ var errMsg = require('../../errors/errorCodes');
 var Roles = require('../../lib/db/models/roles');
 var Unauthorized = require('../../errors/errors').Unauthorized;
 var common = require('../../lib/commonFunctions');
+var ObjectID = require('mongodb').ObjectId;
 
 exports.getRoles = function(req, res, next) {
 	var data = {},
@@ -15,29 +16,7 @@ exports.getRoles = function(req, res, next) {
 		if(err) {
 			return next(new Unauthorized(errMsg['1008'], 1008));
 		}
-		var responseData = [];
-		result.forEach(function(item, idx) {
-			var accessObj = [];
-			res[item['_id']] = item['role'];
-			item['access'].forEach(function(acItem, acIdx) {
-				if(acItem == 'skip_access') {
-					accessObj.push({
-						'accessId' : acItem,
-						'title' : '*'
-					});
-					return;
-				}
-				accessObj.push({
-					'accessId' : acItem,
-					'title' : access[acItem]
-					
- 				});
-			});
-			item['access'] = accessObj;
-			responseData.push(item);
-		});
-		req.store.set('roles', res);
-		req.store.set('resData', responseData);
+		req.store.set('resData', result);
 		next();
 	});
 }

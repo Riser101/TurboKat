@@ -43,13 +43,11 @@ exports.isValidUsersParams = function(req, res, next) {
 		if(!params.role || params.role == '') {
 			return next(new Unauthorized(errMsg['1004'], 1004));
 		}	
+	} else {
+		return next();
 	}
 	
-	if(!params.userStatus || params.userStatus == '') {
-		return next(new Unauthorized(errMsg['1005'], 1005));
-	}
 	for(var item in access) {
-		console.log(access[item]);
 		if(access[item] == "create-user") {
 			return next();
 		} 
@@ -80,10 +78,6 @@ exports.isValidUserPutParams = function(req, res, next) {
 		return next(new Unauthorized(errMsg['1004'], 1004));
 	}
 
-	if(!params.userStatus || params.userStatus == '') {
-		return next(new Unauthorized(errMsg['1005'], 1005));
-	}
-	
 	next();	
 };
 

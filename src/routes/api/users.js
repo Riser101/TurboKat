@@ -85,7 +85,6 @@ exports.addUser = function(req, res, next) {
 		email: params.email,
 		password: params.password,
 		role: new ObjectID(params.role),
-		userStatus: params.userStatus,
 		ts: {
 			insISO : dateISO,
 			insHRF : dateHRF,
@@ -98,7 +97,6 @@ exports.addUser = function(req, res, next) {
 		var data = {
 			email: params.email,
 			password: params.password,
-			userStatus: params.userStatus,
 			ts: {
 				insISO : dateISO,
 				insHRF : dateHRF,
@@ -126,7 +124,6 @@ exports.updateUser = function(req, res, next) {
 			'email': params.email,
 			'password': params.password,
 			'role': new ObjectID(params.role),
-			'userStatus': params.userStatus,
 			'ts.updISO' : Math.floor(Date.now()/1000),
 			'ts.updHRF' : common.getHRFDate()
 		}
