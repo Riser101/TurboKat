@@ -24,6 +24,6 @@
 
 	"4000":"Invalid token, please login",
 
-	"5000":"you're not allowed to create new users. you ain't no admin man."
+	"5000":"You're not allowed to create new users. You're not an admin."
 }
 

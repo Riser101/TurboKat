@@ -8,6 +8,7 @@ var common = require('../../lib/commonFunctions');
 var ObjectID = require('mongodb').ObjectID;
 var Roles = require('../../lib/db/models/roles');
 var jwt = require('jsonwebtoken');
+var crypto = require('crypto');
 
 /**
  * check if user is existing in database
@@ -52,7 +53,13 @@ exports.isEmailPresent = function(req, res, next) {
 */
 exports.validateLogin = function(req, res, next) {
 	var params = req.body;
-    var data = {email: params.email,password: params.password};
+	var hashedPass = crypto
+		.createHash('md5')
+		.update(params.password)
+		.digest('hex');
+
+    var data = {email: params.email,password: hashedPass};
+    
     Users.findUser(data, function(err, result) {
         if(err) return next(new Unauthorized(errMsg['2001'], 2001));
 		if(result === null) return next(new Unauthorized(errMsg['2003'], 2003));
@@ -60,10 +67,10 @@ exports.validateLogin = function(req, res, next) {
 		var token = jwt.sign(result, app.get('secret'), {
           expiresIn: 86400 
         });
-		// res.response = {"message": "Login success", "type":"success"};
+		
 		res.json({
 			success: true,
-          	message: 'Enjoy your token!',
+          	message: 'User validated successfully!',
           	token: token	
 		});
 		next();
@@ -81,9 +88,14 @@ exports.addUser = function(req, res, next) {
 	var dateISO = Math.floor(Date.now()/1000);
 	var dateHRF = common.getHRFDate();
 	
+	var hashedPass = crypto
+		.createHash('md5')
+		.update(params.password)
+		.digest('hex');
+
 	var data = {
 		email: params.email,
-		password: params.password,
+		password: hashedPass,
 		role: new ObjectID(params.role),
 		ts: {
 			insISO : dateISO,
@@ -96,7 +108,7 @@ exports.addUser = function(req, res, next) {
 	if(!params.role) {
 		var data = {
 			email: params.email,
-			password: params.password,
+			password: hashedPass,
 			ts: {
 				insISO : dateISO,
 				insHRF : dateHRF,
@@ -118,11 +130,15 @@ exports.addUser = function(req, res, next) {
 
 exports.updateUser = function(req, res, next) {
 	var params = req.body;
-
+	var hashedPass = crypto
+		.createHash('md5')
+		.update(params.password)
+		.digest('hex');
+	
 	var data = {
 		$set: {
 			'email': params.email,
-			'password': params.password,
+			'password': hashedPass,
 			'role': new ObjectID(params.role),
 			'ts.updISO' : Math.floor(Date.now()/1000),
 			'ts.updHRF' : common.getHRFDate()
