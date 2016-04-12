@@ -8,9 +8,9 @@ var common = require('../../lib/commonFunctions');
 var ObjectID = require('mongodb').ObjectId;
 
 exports.getRoles = function(req, res, next) {
-	var data = {},
-		res = {},
-		access = req.store.get('access');
+	var data = {};
+		// res = {},
+		// access = req.store.get('access');
 	
 	Roles.findAllRoles(data, function(err, result) {
 		if(err) {

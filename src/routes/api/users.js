@@ -182,7 +182,7 @@ function findEmailInDbExId(email, id, callback) {
  * @returns 
 */
 exports.populateUsers = function(req, res, next) {
-	var roles = req.store.get('roles');
+	
 	var params = req.body;
 	var data = {};
 	
@@ -190,12 +190,8 @@ exports.populateUsers = function(req, res, next) {
 		if(err) {
 			return new Unauthorized(errMsg['3000'], 3000);
 		}
-		var user = [];
-		usersResult.forEach(function(item, idx) {
-			item['roleTitle'] = roles[item.role];
-			user.push(item);
-		});
-		req.store.set('resData', user);
+		
+		req.store.set('resData', usersResult);
 		next();
 	});
 };

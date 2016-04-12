@@ -18,7 +18,7 @@ app.set('secret',secret);
 //USERS
 router.get('/users',
  	common.verifyJWTToken,
-	roles.getRoles, 
+	// roles.getRoles, 
 	users.populateUsers, 
 	common.successResponse
 );
