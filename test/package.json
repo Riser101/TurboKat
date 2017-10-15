@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^4.1.2",
+    "expressjs": "^1.0.1",
     "request": "^2.83.0"
   },
   "devDependencies": {
