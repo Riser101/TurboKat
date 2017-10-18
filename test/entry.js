@@ -15,3 +15,11 @@ describe('api', function() {
     });
   });
 });
+
+describe('app', function() {
+  describe('GET /users', function() {
+    it('respond with an array of users', function() {
+      // ...
+    });
+  });
+});
