@@ -1,4 +1,4 @@
-describe('homepage', function(){
+describe('uptime', function(){
   it('should respond to GET',function(done){
     superagent
       .get('http://localhost:'+port)
