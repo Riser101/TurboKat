@@ -23,3 +23,11 @@ describe('app', function() {
     });
   });
 });
+
+describe('api', function() {
+  describe('GET /login', function() {
+    it('respond with an array of users', function() {
+      // ...
+    });
+  });
+});
