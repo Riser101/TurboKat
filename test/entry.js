@@ -31,3 +31,11 @@ describe('api', function() {
     });
   });
 });
+
+describe('api', function() {
+  describe('GET /api/roles', function() {
+    it('respond with an array of users', function() {
+      // ...
+    });
+  });
+});
