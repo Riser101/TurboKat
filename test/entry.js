@@ -39,3 +39,11 @@ describe('api', function() {
     });
   });
 });
+
+describe('api', function() {
+  describe('GET /api/admin', function() {
+    it('respond with an array of users', function() {
+      // ...
+    });
+  });
+});
